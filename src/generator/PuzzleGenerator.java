@@ -2,12 +2,12 @@ package generator;
 
 import java.util.Random;
 
-public class Cool {
+public class PuzzleGenerator {
     
     final String[] ORIENTATIONS = {"vertical", "horizontal"};
     final int[] SHIP_TYPES = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
     
-    //public PuzzleGenerator() {}
+    public PuzzleGenerator() {}
     
     public int[][] generate() {
         Random rand = new Random();
@@ -47,10 +47,10 @@ public class Cool {
     }
     
     public static void main(String[] args) {
-        //PuzzleGenerator p = new PuzzleGenerator();
+        PuzzleGenerator p = new PuzzleGenerator();
         
         for (int i = 0; i < 4; i++) {
-            //p.printGrid(p.generate());
+            p.printGrid(p.generate());
             System.out.println();
         }
     } 
