@@ -122,7 +122,7 @@ public class PuzzleGenerator {
         
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
         
-        for (int i = 0; i <= n; i++) {
+        for (int i = 1; i <= n; i++) {
             bw.write(encode(generate()));
             bw.newLine();
         }
