@@ -1,15 +1,20 @@
 package generator;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Random;
 
 public class PuzzleGenerator {
     
-    final String[] ORIENTATIONS = {"vertical", "horizontal"};
-    final int[] SHIP_TYPES = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    final static String[] ORIENTATIONS = {"vertical", "horizontal"};
+    final static int[] SHIP_TYPES = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
     
     public PuzzleGenerator() {}
     
-    public int[][] generate() {
+    public static int[][] generate() {
         Random rand = new Random();
         int[][] grid = new int[10][10];
         int x, y, ship, endpoint = 0;
@@ -25,7 +30,7 @@ public class PuzzleGenerator {
                 y = rand.nextInt(10);
                 orientation = ORIENTATIONS[rand.nextInt(2)];
                 
-                if (isPlacementValid(x, y, orientation, ship, grid)) {
+                if (isPlacementValid(x, y, ship, orientation, grid)) {
                     if (orientation.equals("vertical")) {
                         // Place ship vertically
                         endpoint = y + ship;
@@ -46,7 +51,7 @@ public class PuzzleGenerator {
         return grid;
     }
     
-    public boolean isPlacementValid(int x, int y, String orientation, int ship, int[][] grid) {
+    public static boolean isPlacementValid(int x, int y, int ship, String orientation, int[][] grid) {
         int endpoint = 0;
         if (orientation.equals("vertical")) {
             // Check vertically
@@ -69,6 +74,33 @@ public class PuzzleGenerator {
         return true;
     }
     
+    public static String encode(int[][] grid) {
+        //int[] x = new int[10];
+        //int[] y = new int[10];
+        String x = "", y = "";
+        int xCount = 0;
+        int yCount = 0;
+        
+        // Determine x-axis and y-axis labels
+        for (int i = 0; i < grid.length; i++) {
+            xCount = 0;
+            yCount = 0;
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] != 0) {
+                    xCount++;
+                }
+                
+                if (grid[j][i] != 0) {
+                    yCount++;
+                }
+            }
+            x += xCount;
+            y += yCount;
+        }
+        
+        return x + y;
+    }
+    
     public void printGrid(int[][] grid) {
         int count = 0;
         for (int i = grid[0].length - 1; i >= 0; i--) {
@@ -84,12 +116,36 @@ public class PuzzleGenerator {
         System.out.println();
     }
     
-    public static void main(String[] args) {
-        PuzzleGenerator p = new PuzzleGenerator();
+    public static void writeDatasetToFile(String fileName, int n) throws IOException {
+        File file = new File(fileName);
+        FileOutputStream fos = new FileOutputStream(file);
         
-        for (int i = 0; i < 1; i++) {
-            p.printGrid(p.generate());
-            System.out.println();
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+        
+        for (int i = 0; i <= n; i++) {
+            bw.write(encode(generate()));
+            bw.newLine();
+        }
+        
+        bw.close();
+    }
+    
+    public static void main(String[] args) {
+        
+        String fileName = "dataset.txt";
+        int n = 100;
+        
+        if (args.length == 2) {
+            fileName = args[0];
+            n = Integer.parseInt(args[1]);
+        }
+        
+        fileName = "data/" + fileName;
+        
+        try {
+            writeDatasetToFile(fileName, n);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     } 
 }

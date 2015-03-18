@@ -5,3 +5,7 @@ bin
 .classpath
 .project
 .settings/org.eclipse.jdt.core.prefs
+
+# OSX
+.DS_Store
+src/.DS_Store
