@@ -1,13 +1,8 @@
 package core;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +18,7 @@ public class Loader {
     }
     
     public boolean load(String filename) {
-        
+
         try {
             FileReader reader = new FileReader(filename);
             BufferedReader bfr = new BufferedReader(reader);
@@ -37,7 +32,7 @@ public class Loader {
             e.printStackTrace();
             return false;
         }
-        
+
         size = dataset.size();
         
         return false;
