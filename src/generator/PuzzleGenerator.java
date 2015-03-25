@@ -142,26 +142,6 @@ public class PuzzleGenerator {
     }
     
     /**
-     * Utility function that prints the contents of a matrix.
-     * 
-     * @param grid
-     */
-    public void printGrid(int[][] grid) {
-        int count = 0;
-        for (int i = grid[0].length - 1; i >= 0; i--) {
-            for (int j = 0; j < grid.length; j++) {
-                if (grid[i][j] != 0)
-                    count++;
-                System.out.print(grid[j][i] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println("Count: " + count);
-        System.out.println();
-    }
-    
-    /**
      * Generates n puzzles, encodes them, and writes them to a file
      * using the provided filename.
      * 

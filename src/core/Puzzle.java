@@ -1,7 +1,6 @@
 package core;
 
 import java.awt.Point;
-import java.util.HashMap;
 
 /**
  * Basic implementation of a puzzle instance. Container
@@ -15,9 +14,9 @@ public class Puzzle {
     private int[][] grid;
     private int[] x;
     private int[] y;
-    private HashMap<Point, Integer> hints;
+    private Point[] hints;
     
-    public Puzzle(int[][] grid, int[] x, int[] y, HashMap<Point, Integer> hints) {
+    public Puzzle(int[][] grid, int[] x, int[] y, Point[] hints) {
         this.grid = grid;
         this.x = x;
         this.y = y;
@@ -48,11 +47,11 @@ public class Puzzle {
         this.y = y;
     }
 
-    public HashMap<Point, Integer> getHints() {
+    public Point[] getHints() {
         return hints;
     }
 
-    public void setHints(HashMap<Point, Integer> hints) {
+    public void setHints(Point[] hints) {
         this.hints = hints;
     }
 }
