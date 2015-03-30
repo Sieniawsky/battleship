@@ -3,7 +3,7 @@ package utils;
 import core.Puzzle;
 
 /**
- * Utility class that provides several helper methods.
+ * Utility class that provides several static helper methods.
  * 
  * @author Martin Sieniawski msien009@uottawa.ca
  *
@@ -11,6 +11,10 @@ import core.Puzzle;
 public class Utils {
     
     /**
+     * Takes a Puzzle instance and prints its grid,
+     * x and y labels, and its hints. The data is printed
+     * in such a way that a complete snapshot of the puzzle
+     * can be easily seen and understood.
      * 
      * @param puzzle
      */
@@ -39,6 +43,7 @@ public class Utils {
     }
     
     /**
+     * Creates a string representation of the provided array.
      * 
      * @param x
      * @return
@@ -57,7 +62,9 @@ public class Utils {
     }
     
     /**
-     * Utility function that prints the contents of a matrix.
+     * Utility function that prints the contents of a matrix
+     * such that the coordinate [0][0] is in the bottom left
+     * hand corner of the printed grid.
      * 
      * @param grid
      */

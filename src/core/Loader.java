@@ -28,6 +28,8 @@ public class Loader {
     }
     
     /**
+     * Opens the specified data set file and loads its
+     * contents into memory.
      * 
      * @param filename
      * @return
@@ -54,6 +56,8 @@ public class Loader {
     }
     
     /**
+     * Takes a single line from a data set file and decodes the
+     * string representation. A Puzzle object instance is returned.
      * 
      * @param encoded
      * @return
@@ -90,6 +94,8 @@ public class Loader {
     }
     
     /**
+     * Return true if the data set has at least one more
+     * line to read.
      * 
      * @return
      */
@@ -98,6 +104,8 @@ public class Loader {
     }
     
     /**
+     * Decodes the next line in the data set and returns its
+     * puzzle object representation.
      * 
      * @return
      */
