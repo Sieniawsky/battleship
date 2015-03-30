@@ -15,8 +15,27 @@ public class Utils {
      * @param puzzle
      */
     public static void printPuzzle(Puzzle puzzle) {
-        // Pretty print the puzzle in its current state,
-        // include labels and hints
+        
+        for (int i = puzzle.getGrid()[0].length - 1; i >= 0; i--) {
+            for (int j = 0; j < puzzle.getGrid().length; j++) {
+                if (j == 9) {
+                    System.out.print(puzzle.getGrid()[j][i] + " - " + puzzle.getY()[i]);
+                } else {
+                    System.out.print(puzzle.getGrid()[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+        
+        for (int i = 0; i < 10; i++) {
+            System.out.print("| ");
+        }
+        System.out.println();
+        
+        for (int i = 0; i < puzzle.getX().length; i++) {
+            System.out.print(puzzle.getX()[i] + " ");
+        }
+        System.out.println();
     }
     
     /**

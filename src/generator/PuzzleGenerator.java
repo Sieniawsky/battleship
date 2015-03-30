@@ -134,9 +134,12 @@ public class PuzzleGenerator {
                     yCount++;
                 }
             }
-            x += xCount;
-            y += yCount;
+            x = x + "" + xCount;
+            y = y + "" + yCount;
         }
+        
+        System.out.println(x);
+        System.out.println(y);
         
         return x + y;
     }
@@ -187,5 +190,7 @@ public class PuzzleGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        System.out.println("Generated file: " + filename + " which contains " + n + " puzzle instances.");
     } 
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * of less than a megabyte the entire data-set is loaded into
  * memory.
  * 
- * @author trill
+ * @author Martin Sieniawski msien009@uottawa.ca
  *
  */
 public class Loader {
@@ -79,8 +79,14 @@ public class Loader {
         // Parse hints
         int length = (encoded.length() - 20)/2;
         Point[] hints = new Point[length];
+        int[][] grid = new int[10][10];
         
-        return new Puzzle(new int[10][10], x, y, hints);
+        // Add the hints to the blank grid
+        for (int i = 0; i < hints.length; i++) {
+            grid[hints[i].x][hints[i].y] = 9;
+        }
+        
+        return new Puzzle(grid, x, y, hints);
     }
     
     /**
@@ -88,7 +94,7 @@ public class Loader {
      * @return
      */
     public boolean hasNext() {
-        return (index + 1) < size;
+        return (index + 1) <= size;
     }
     
     /**
@@ -97,7 +103,7 @@ public class Loader {
      */
     public Puzzle getNext() {
         
-        if (index + 1 >= size) {
+        if (index + 1 > size) {
             return null;
         }
         

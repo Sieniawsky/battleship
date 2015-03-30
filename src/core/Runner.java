@@ -12,9 +12,7 @@ public class Runner {
         
         while (loader.hasNext()) {
             p = loader.getNext();
-            System.out.println("X: " + Utils.arrayToString(p.getX()));
-            System.out.println("Y: " + Utils.arrayToString(p.getY()));
-            System.out.println("Hints: " + p.getHints().length);
+            Utils.printPuzzle(p);
             System.out.println();
         }
     }
