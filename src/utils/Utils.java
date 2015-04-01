@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.List;
+
 import core.Puzzle;
 
 /**
@@ -19,27 +21,28 @@ public class Utils {
      * @param puzzle
      */
     public static void printPuzzle(Puzzle puzzle) {
+
+        int[][] grid = puzzle.getGrid();
         
-        for (int i = puzzle.getGrid()[0].length - 1; i >= 0; i--) {
-            for (int j = 0; j < puzzle.getGrid().length; j++) {
-                if (j == 9) {
-                    System.out.print(puzzle.getGrid()[j][i] + " - " + puzzle.getY()[i]);
-                } else {
-                    System.out.print(puzzle.getGrid()[i][j] + " ");
-                }
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid.length; j++) {
+                System.out.print(grid[i][j] + " ");
             }
-            System.out.println();
+            
+            System.out.print(" - " + puzzle.getX()[i] + "\n");
         }
         
-        for (int i = 0; i < 10; i++) {
-            System.out.print("| ");
+        for (int i = 0; i < grid.length; i++)
+        {
+        	System.out.print("| ");
         }
         System.out.println();
         
-        for (int i = 0; i < puzzle.getX().length; i++) {
-            System.out.print(puzzle.getX()[i] + " ");
+        for (int i = 0; i < grid.length; i++)
+        {
+        	System.out.print(puzzle.getY()[i] + " ");
         }
-        System.out.println();
+        System.out.println("\n");
     }
     
     /**
@@ -70,11 +73,11 @@ public class Utils {
      */
     public static void printGrid(int[][] grid) {
         int count = 0;
-        for (int i = grid[0].length - 1; i >= 0; i--) {
+        for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid.length; j++) {
                 if (grid[i][j] != 0)
                     count++;
-                System.out.print(grid[j][i] + " ");
+                System.out.print(grid[i][j] + " ");
             }
             System.out.println();
         }
@@ -83,4 +86,25 @@ public class Utils {
         System.out.println();
     }
 
+    public static int computeIntAverage(List<Integer> list)
+    {
+    	int sum = 0;
+    	for (Integer num : list)
+    	{
+    		sum += num;
+    	}
+    	
+    	return sum / list.size();
+    }
+    
+    public static long computeLongAverage(List<Long> list)
+    {
+    	int sum = 0;
+    	for (Long num : list)
+    	{
+    		sum += num;
+    	}
+    	
+    	return sum / list.size();
+    }
 }

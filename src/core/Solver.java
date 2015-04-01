@@ -6,7 +6,16 @@ package core;
  * @author Martin Sieniawski msien009@uottawa.ca
  *
  */
-public interface Solver {
+public abstract class Solver {
     
-    public int[] solve(Puzzle puzzle);
+    public final Result solve(Puzzle puzzle)
+    {    	
+    	long startTime = System.currentTimeMillis();
+    	
+    	Result result = new Result(run(puzzle), System.currentTimeMillis() - startTime);
+    	
+    	return result;
+    }
+    
+    protected abstract int run(Puzzle puzzle);
 }

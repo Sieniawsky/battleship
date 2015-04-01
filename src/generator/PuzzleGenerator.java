@@ -20,8 +20,6 @@ public class PuzzleGenerator {
     final static String[] ORIENTATIONS = {"vertical", "horizontal"};
     final static int[] SHIP_TYPES = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
     
-    public PuzzleGenerator() {}
-    
     /**
      * Need to add hinter support.
      * 
@@ -134,12 +132,9 @@ public class PuzzleGenerator {
                     yCount++;
                 }
             }
-            x = x + "" + xCount;
-            y = y + "" + yCount;
+            x += xCount;
+            y += yCount;
         }
-        
-        System.out.println(x);
-        System.out.println(y);
         
         return x + y;
     }
