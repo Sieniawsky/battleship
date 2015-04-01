@@ -1,6 +1,5 @@
 package core;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -45,14 +44,15 @@ public class Loader {
                 dataset.add(line);
             }
             bfr.close();
-        } catch (IOException e) {
+        } catch (IOException e) 
+        {
             e.printStackTrace();
             return false;
         }
 
         size = dataset.size();
         
-        return false;
+        return true;
     }
     
     /**
@@ -80,17 +80,9 @@ public class Loader {
             }
         }
         
-        // Parse hints
-        int length = (encoded.length() - 20)/2;
-        Point[] hints = new Point[length];
         int[][] grid = new int[10][10];
         
-        // Add the hints to the blank grid
-        for (int i = 0; i < hints.length; i++) {
-            grid[hints[i].x][hints[i].y] = 9;
-        }
-        
-        return new Puzzle(grid, x, y, hints);
+        return new Puzzle(grid, x, y);
     }
     
     /**

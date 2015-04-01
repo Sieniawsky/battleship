@@ -1,5 +1,11 @@
 package core;
 
+import generator.PuzzleGenerator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import utils.Utils;
 
 /**
@@ -21,14 +27,39 @@ public class Runner {
     public static void main (String[] args) {
         // Run an algorithm on the data-set, record metrics, and display results.
         Loader loader = new Loader();
-        loader.load("data/dataset-10.txt");
-        Puzzle p;
+        if (!loader.load("data/" + args[0]))
+        {
+        	PuzzleGenerator.main(null);
+        	loader.load("data/dataset.txt");
+        }
+        
+        int s = 0;
+        try
+        {
+        	s = Integer.parseInt(args[1]);
+        } catch (Exception e) {}
+        
+        Solver solver = s == 0 ? new BruteForceSolver() : s == 1 ? new BacktrackingSolver() : new GeneticSolver();
+        
+        Result result;
+        
+        List<Long> elapsedTimes = new ArrayList<Long>();
+        List<Integer> verificationCounts = new ArrayList<Integer>();
         
         while (loader.hasNext()) {
-            p = loader.getNext();
-            Utils.printPuzzle(p);
-            System.out.println();
+            result = solver.solve(loader.getNext());
+            
+            elapsedTimes.add(result.getTimeElapsed());
+            verificationCounts.add(result.getVerificationCount());
         }
+        
+        System.out.println("Min time: " + Collections.min(elapsedTimes));
+        System.out.println("Max time: " + Collections.max(elapsedTimes));
+        System.out.println("Average time: " + Utils.computeLongAverage(elapsedTimes));
+        System.out.println();
+        System.out.println("Min operations: " + Collections.min(verificationCounts));
+        System.out.println("Max operations: " + Collections.max(verificationCounts));
+        System.out.println("Average operations: " + Utils.computeIntAverage(verificationCounts));
     }
 
 }

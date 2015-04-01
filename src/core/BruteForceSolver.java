@@ -9,12 +9,17 @@ package core;
  * @author Martin Sieniawski msien009@uottawa.ca
  *
  */
-public class BruteForceSolver implements Solver {
+public class BruteForceSolver extends Solver {
 
-    @Override
-    public int[] solve(Puzzle puzzle) {
-        // TODO Auto-generated method stub
-        return null;
+    protected int run(Puzzle puzzle) {
+    	
+    	try
+    	{
+    		Thread.sleep(10);
+    	}
+    	catch(Exception e) {}
+    	
+        return 0;
     }
 
 }
