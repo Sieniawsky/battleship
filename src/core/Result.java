@@ -1,21 +1,42 @@
 package core;
 
+/**
+ * A Result contains the number of operations and the time to find a solution for an algorithm
+ */
 public class Result
 {
-	private int verificationCount;
+	// The number of operations called during the solve
+	private int operationCount;
+	// The time it took to find the solution
 	private long timeElapsed;
 	
-	public Result(int verificationCount, long timeElapsed)
+	/**
+	 * Constructor
+	 * 
+	 * @param operationCount - the number of operations called during the solve
+	 * @param timeElapsed - the time it took to find the solution
+	 */
+	public Result(int operationCount, long timeElapsed)
 	{
-		this.verificationCount = verificationCount;
+		this.operationCount = operationCount;
 		this.timeElapsed = timeElapsed;
 	}
 
-	public int getVerificationCount()
+	/**
+	 * Getter for the number of operations
+	 * 
+	 * @return The number of operations called during the solve
+	 */
+	public int getOperationCount()
 	{
-		return verificationCount;
+		return operationCount;
 	}
 
+	/**
+	 * Getter for the time elapsed
+	 * 
+	 * @return The time it took to find the solution
+	 */
 	public long getTimeElapsed()
 	{
 		return timeElapsed;

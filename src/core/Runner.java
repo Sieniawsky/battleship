@@ -44,22 +44,22 @@ public class Runner {
         Result result;
         
         List<Long> elapsedTimes = new ArrayList<Long>();
-        List<Integer> verificationCounts = new ArrayList<Integer>();
+        List<Integer> operationCounts = new ArrayList<Integer>();
         
         while (loader.hasNext()) {
             result = solver.solve(loader.getNext());
             
             elapsedTimes.add(result.getTimeElapsed());
-            verificationCounts.add(result.getVerificationCount());
+            operationCounts.add(result.getOperationCount());
         }
         
         System.out.println("Min time: " + Collections.min(elapsedTimes));
         System.out.println("Max time: " + Collections.max(elapsedTimes));
         System.out.println("Average time: " + Utils.computeLongAverage(elapsedTimes));
         System.out.println();
-        System.out.println("Min operations: " + Collections.min(verificationCounts));
-        System.out.println("Max operations: " + Collections.max(verificationCounts));
-        System.out.println("Average operations: " + Utils.computeIntAverage(verificationCounts));
+        System.out.println("Min operations: " + Collections.min(operationCounts));
+        System.out.println("Max operations: " + Collections.max(operationCounts));
+        System.out.println("Average operations: " + Utils.computeIntAverage(operationCounts));
     }
 
 }
