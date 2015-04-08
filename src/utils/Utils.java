@@ -86,24 +86,32 @@ public class Utils {
         System.out.println();
     }
 
+    /**
+     * Computes the average of the integers
+     * 
+     * @param list - the integer values for which to find the average
+     * @return The average
+     */
     public static int computeIntAverage(List<Integer> list)
     {
-    	int sum = 0;
-    	for (Integer num : list)
-    	{
-    		sum += num;
-    	}
+    	// Sum is a long to avoid overflow
+    	long sum = 0;
+    	for (Integer num : list) sum += num;
     	
-    	return sum / list.size();
+    	// Cast the result to an int, since the average is definitely an int
+    	return (int) (sum / list.size());
     }
     
+    /**
+     * Computes the average of the long integers
+     * 
+     * @param list - the long values for which to find the average
+     * @return The average
+     */
     public static long computeLongAverage(List<Long> list)
     {
     	int sum = 0;
-    	for (Long num : list)
-    	{
-    		sum += num;
-    	}
+    	for (Long num : list) sum += num;
     	
     	return sum / list.size();
     }
