@@ -50,7 +50,7 @@ public class GeneticSolver extends Solver {
             }
             
             // If stuck, restart
-            if (generations == 20000) {
+            if (generations == 5000) {
                 System.out.println("reset");
                 generations = 0;
                 for (int i = 0; i < field.length; i++) {
