@@ -17,8 +17,8 @@ import java.util.Random;
  */
 public class PuzzleGenerator {
     
-    final static String[] ORIENTATIONS = {"vertical", "horizontal"};
-    final static int[] SHIP_TYPES = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    public final static String[] ORIENTATIONS = {"vertical", "horizontal"};
+    public final static int[] SHIP_TYPES = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
     
     /**
      * Need to add hinter support.
