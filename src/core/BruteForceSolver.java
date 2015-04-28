@@ -30,6 +30,25 @@ public class BruteForceSolver extends Solver
 		int shipCount = 0;
 		for (int num : shipSizes) shipCount += num;
 
+		// Counts the combinations per millisecond, averaged each second
+		new Thread() {
+			int c = 0;
+			
+			public void run()
+			{
+				while(true)
+				{
+					try
+					{
+						sleep(1000);
+						System.out.println((count-c)/1000);
+						c=count;
+					}
+					catch(Exception e) {}
+				}
+			}
+		}.start();
+
 		// Call the algorithm method
 		bruteForceRecursion(puzzle, 0, 0, shipCount);
 
@@ -48,51 +67,55 @@ public class BruteForceSolver extends Solver
 	 * @return True if the solution was found, false otherwise
 	 */
 	private boolean bruteForceRecursion(Puzzle puzzle, int x, int y, int n)
-	{
+	{	
 		/****************************************************************
 		 * This algorithm takes forever, no point in commenting further *
 		 ****************************************************************/
-		
-		if (n == 0) return puzzle.isValid();
-		
-		int yNext = (y + 1) % length;
-		int xNext = x + (yNext == 0 ? 1 : 0);
-		
-		for (int i = 0; i < shipSizes.length; i++)
+
+		if (n == 0) 
 		{
-			int size = i + 1;
-			
-			if (shipSizes[i] > 0)
-			{	
-				count++;
-				if (puzzle.placeShip(x, y, size, true))
+			count++;
+			return puzzle.isValid();
+		}
+
+		for (int row = x; row < length; row++)
+		{
+			for (int col = y; col < length; col++)
+			{
+				for (int i = 0; i < shipSizes.length; i++)
 				{
-					shipSizes[i]--;
+					int size = i + 1;
 					
-					if (bruteForceRecursion(puzzle, xNext, yNext, n - 1)) return true;
-					else
-					{
-						puzzle.removeShip(x, y, size, true);
-						shipSizes[i]++;
-					}
-				}
-				
-				count++;
-				if (puzzle.placeShip(x, y, size, false))
-				{
-					shipSizes[i]--;
-					int yNextHorizontal = (y + size + 1) % length;
-					
-					if (bruteForceRecursion(puzzle, x + (yNextHorizontal == 0 ? 1 : 0), yNextHorizontal, n - 1)) return true;
-					else
-					{
-						puzzle.removeShip(x, y, size, false);
-						shipSizes[i]++;
-					}
+					if (shipSizes[i] > 0)
+					{	
+						if (puzzle.placeShipNoCheck(x, y, size, true))
+						{
+							shipSizes[i]--;
+
+							if (bruteForceRecursion(puzzle, row, col, n - 1)) return true;
+							else
+							{
+								puzzle.removeShip(x, y, size, true);
+								shipSizes[i]++;
+							}
+						}
+
+						if (puzzle.placeShipNoCheck(x, y, size, false))
+						{
+							shipSizes[i]--;
+
+							if (bruteForceRecursion(puzzle, row, col + size, n - 1)) return true;
+							else
+							{
+								puzzle.removeShip(x, y, size, false);
+								shipSizes[i]++;
+							}
+						}
+					}	
 				}
 			}
 		}
 		
-		return bruteForceRecursion(puzzle, xNext, yNext, n);
+		return false;
 	}
 }
