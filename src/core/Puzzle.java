@@ -122,6 +122,27 @@ public class Puzzle {
     	return true;
     }
 
+	public boolean placeShipNoCheck(int x, int y, int size, boolean vertical)
+    {
+    	// Return false if the ship cannot fit in the grid
+    	if (vertical && (size + x > grid.length) || !vertical && (size + y > grid.length)) return false;
+
+    	// Return false if the ship intersects with another ship
+    	for (int i = 0; i < size; i++)
+    	{
+    		if (vertical && this.grid[i + x][y] != 0 || !vertical && this.grid[x][i + y] != 0) return false;
+    	}
+
+    	// Place the ship
+    	for (int i = 0; i < size; i++)
+    	{
+    		if (vertical) this.grid[i + x][y] = size;
+    		else this.grid[x][i + y] = size;
+    	}
+    	
+    	return true;
+    }
+
     /**
      * Removes the ship by zero-ing out the location of the ship
      * 
