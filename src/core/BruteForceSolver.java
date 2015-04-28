@@ -31,7 +31,7 @@ public class BruteForceSolver extends Solver
 		for (int num : shipSizes) shipCount += num;
 
 		// Counts the combinations per millisecond, averaged each second
-		new Thread() {
+		Thread counter = new Thread() {
 			int c = 0;
 			
 			public void run()
@@ -47,11 +47,15 @@ public class BruteForceSolver extends Solver
 					catch(Exception e) {}
 				}
 			}
-		}.start();
+		};
+
+		counter.start();
 
 		// Call the algorithm method
 		bruteForceRecursion(puzzle, 0, 0, shipCount);
 
+		counter.interrupt();
+		
 		// Return the number of operations
         return count;
     }
