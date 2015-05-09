@@ -6,11 +6,33 @@ import java.awt.Point;
 import java.util.Arrays;
 import java.util.Random;
 
-import utils.Utils;
-
+/**
+ * A simple implementation of the genetic algorithm. This
+ * implementation focuses on solving 10x10 instances of the
+ * Battleship Solitaire puzzle. The basic procedure is as
+ * follows:
+ * 
+ * 1. A search space (field) of random solutions is generated
+ *    for the given puzzle.
+ *    
+ * 2. Fitness values are computed for all elements in the field.
+ *    If a fitness of zero is computed for an element then the
+ *    optimal solution has been found.
+ * 
+ * 3. Elements of the field with the worst fitness values are
+ *    removed from the field. The remaining elements are mutated
+ *    in order to re-populate the search space.
+ *    
+ * 4. Go to step 2 and repeat until an optimal solution is found
+ *    or the generation cap has been reached (5000).
+ * 
+ * @author Martin Sieniawski msien009@uottawa.ca
+ *
+ */
 public class GeneticSolver extends Solver {
     
     final int FIELD_SIZE = 200;
+    final int GENERATION_CAP = 5000;
 
     @Override
     protected int run(Puzzle puzzle) {
@@ -38,20 +60,16 @@ public class GeneticSolver extends Solver {
 
             // Check for fitness of 0
             if (fitnesses[0].y == 0) {
-                System.out.println("Valid solution has been found!");
                 break;
             }
-            
-            //System.out.println(fitnessToString(fitnesses));
 
             // Step 3. Replace worst scoring grids with new mutations
             for (int i = FIELD_SIZE/2; i < fitnesses.length; i++) {
                 field[fitnesses[i].x] = mutate(deepCopy(field[fitnesses[i-FIELD_SIZE/2].x]));
             }
             
-            // If stuck, restart
-            if (generations == 5000) {
-                System.out.println("reset");
+            // If stuck for too long in a local minimum, restart
+            if (generations == GENERATION_CAP) {
                 generations = 0;
                 for (int i = 0; i < field.length; i++) {
                     field[i] = PuzzleGenerator.generate();
@@ -62,14 +80,21 @@ public class GeneticSolver extends Solver {
         return operations;
     }
     
-     private String fitnessToString(Point[] fits) {
-         String x = "";
-         for (Point p: fits) {
-             x += p.y + " ";
-         }
-         return x;
-     }
-
+    /**
+     * Takes the x and y constraints for the given puzzle and the field
+     * of possible solutions. Using this information fitness values are
+     * computed and returned for later use. An array of Point objects is
+     * used to store the fitness values. We would like to have a sorted
+     * list of fitness values so that finding the worst scores is easy.
+     * However, we need to know which fitness value corresponds to which
+     * element of the field. Thus the x value of the Point object is the
+     * index value of an element in the field, and the y value is the fitness.
+     * 
+     * @param x The puzzle constraints for the x-axis
+     * @param y The puzzle constraints for the y-axis
+     * @param field The search space of potential solutions
+     * @return
+     */
     private Point[] computeFieldFitness(int[] x, int[] y, int[][][] field) {
         int xCount;
         int yCount;
@@ -113,15 +138,25 @@ public class GeneticSolver extends Solver {
 
         return fits;
     }
-
+    
+    /**
+     * Performs the genetic operation of mutation. A random
+     * ship is selected and removed from the solution. It is
+     * then randomly placed elsewhere on the grid. Several
+     * edge-cases must be considered when removing a ship to
+     * ensure that the grid is not corrupted.
+     * 
+     * @param grid
+     * @return
+     */
     private int[][] mutate(int[][] grid) {
-        // Just do a YOLO random mutation
         Random rand = new Random();
         int x = 0;
         int y = 0;
         boolean found = false;
         int ship = 0;
-
+        
+        // Find a random ship segment
         while (!found) {
             x = rand.nextInt(10);
             y = rand.nextInt(10);
@@ -143,16 +178,12 @@ public class GeneticSolver extends Solver {
             } else if (x - 1 >= 0 && grid[x-1][y] == ship) {
                 // search up
                 x = x - 1;
-            } else if (isSequential(false, x, y, ship, grid)) {
+            } else if (isValidForRemoval(false, x, y, ship, grid)) {
                 cool = true;
                 vertical = false;
-            } else if (isSequential(true, x, y, ship, grid)) {
+            } else if (isValidForRemoval(true, x, y, ship, grid)) {
                 cool = true;
             } else {
-                //System.out.println("no op");
-                //Utils.printGrid(grid);
-                //System.out.println("ship: " + ship + ", x: " + x + ", y: " + y);
-                //return null;
                 found = false;
                 while (!found) {
                     x = rand.nextInt(10);
@@ -165,10 +196,6 @@ public class GeneticSolver extends Solver {
                 }
             }
         }
-        
-        //System.out.println("before");
-        //Utils.printGrid(grid);
-        //System.out.println("ship: " + ship + ", x: " + x + ", y: " + y);
 
         // Remove it
         for (int i = 0; i < ship; i++) {
@@ -204,19 +231,33 @@ public class GeneticSolver extends Solver {
                 placed = true;
             }
         }
-        
-        //System.out.println("after");
-        //Utils.printGrid(grid);
 
         return grid;
     }
-
-    private boolean isSequential(boolean vertical, int x, int y, int ship,
+    
+    /**
+     * Utility function that determines if a ship located at the
+     * provided coordinates is eligible for removal without
+     * corrupting the grid. Several edge-cases must be checked
+     * in order to ensure that the ship location is eligible for
+     * removal.
+     * 
+     * @param vertical True if the ship is vertical, false if horizontal
+     * @param x The top-left most x coordinate of the ship
+     * @param y The top-left most y coordinate of the ship
+     * @param ship The ship type that is located at the coordinates
+     * @param grid The current solution
+     * @return
+     */
+    private boolean isValidForRemoval(boolean vertical, int x, int y, int ship,
             int[][] grid) {
         
+        // No need to check is ship is of length one.
         if (ship == 1)
             return true;
         
+        // Check if the entire ship can be sequentially found
+        // in the given orientation.
         for (int i = 0; i < ship; i++) {
             if (vertical) {
                 if (x+i > 9 || grid[x + i][y] != ship) {
@@ -229,7 +270,11 @@ public class GeneticSolver extends Solver {
             }
         }
         
-        // check extended range
+        // *******************
+        // Edge-cases begin
+        // *******************
+        
+        // Check extended range
         if (vertical && x+ship <= 9 && grid[x+ship][y] == ship && y+1 <= 9 && grid[x][y+1] == ship)
             return false;
         if (!vertical && y+ship <= 9 && grid[x][y+ship] == ship && x+1 <= 9 && grid[x+1][y] == ship) {
@@ -241,28 +286,31 @@ public class GeneticSolver extends Solver {
             if (!another)
                 return false;
         }
-        // horizontal stack cases
+        // Horizontal stack cases
         if (vertical && y+1 <= 9 && grid[x][y+1]==ship && y-1 >= 0 && grid[x+ship-1][y-1]==ship) {
             return false;
         }
         if (vertical && y-1>=0 && grid[x][y-1]==ship && y+1<=9 && grid[x+ship-1][y+1]==ship) {
             return false;
         }
-        // vertical beside/offset cases
+        // Vertical beside/offset cases
         if (!vertical && x-1>=0 && grid[x-1][y+ship-1]==ship && x+1<=9 && grid[x+1][y]==ship) {
             return false;
         }
         if (!vertical && x-1>=0 && grid[x-1][y]==ship && x+1<=9 && grid[x+1][y+ship-1]==ship) {
             return false;
         }
-        
-        //System.out.println("is sequential");
-        //Utils.printGrid(grid);
-        //System.out.println("v: " + vertical + ", ship: " + ship + ", x: " + x + ", y: " + y);
 
         return true;
     }
-
+    
+    /**
+     * Utility function that creates a deep copy of a given
+     * two-dimensional array.
+     * 
+     * @param original
+     * @return
+     */
     private int[][] deepCopy(int[][] original) {
         if (original == null) {
             return null;
