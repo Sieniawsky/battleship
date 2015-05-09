@@ -6,8 +6,6 @@ import java.awt.Point;
 import java.util.Arrays;
 import java.util.Random;
 
-import utils.Utils;
-
 public class GeneticSolver extends Solver {
     
     final int FIELD_SIZE = 200;
@@ -38,11 +36,8 @@ public class GeneticSolver extends Solver {
 
             // Check for fitness of 0
             if (fitnesses[0].y == 0) {
-                System.out.println("Valid solution has been found!");
                 break;
             }
-            
-            //System.out.println(fitnessToString(fitnesses));
 
             // Step 3. Replace worst scoring grids with new mutations
             for (int i = FIELD_SIZE/2; i < fitnesses.length; i++) {
@@ -51,7 +46,6 @@ public class GeneticSolver extends Solver {
             
             // If stuck, restart
             if (generations == 5000) {
-                System.out.println("reset");
                 generations = 0;
                 for (int i = 0; i < field.length; i++) {
                     field[i] = PuzzleGenerator.generate();
@@ -61,14 +55,6 @@ public class GeneticSolver extends Solver {
 
         return operations;
     }
-    
-     private String fitnessToString(Point[] fits) {
-         String x = "";
-         for (Point p: fits) {
-             x += p.y + " ";
-         }
-         return x;
-     }
 
     private Point[] computeFieldFitness(int[] x, int[] y, int[][][] field) {
         int xCount;
@@ -115,7 +101,6 @@ public class GeneticSolver extends Solver {
     }
 
     private int[][] mutate(int[][] grid) {
-        // Just do a YOLO random mutation
         Random rand = new Random();
         int x = 0;
         int y = 0;
@@ -149,10 +134,6 @@ public class GeneticSolver extends Solver {
             } else if (isSequential(true, x, y, ship, grid)) {
                 cool = true;
             } else {
-                //System.out.println("no op");
-                //Utils.printGrid(grid);
-                //System.out.println("ship: " + ship + ", x: " + x + ", y: " + y);
-                //return null;
                 found = false;
                 while (!found) {
                     x = rand.nextInt(10);
@@ -165,10 +146,6 @@ public class GeneticSolver extends Solver {
                 }
             }
         }
-        
-        //System.out.println("before");
-        //Utils.printGrid(grid);
-        //System.out.println("ship: " + ship + ", x: " + x + ", y: " + y);
 
         // Remove it
         for (int i = 0; i < ship; i++) {
@@ -204,9 +181,6 @@ public class GeneticSolver extends Solver {
                 placed = true;
             }
         }
-        
-        //System.out.println("after");
-        //Utils.printGrid(grid);
 
         return grid;
     }
@@ -255,10 +229,6 @@ public class GeneticSolver extends Solver {
         if (!vertical && x-1>=0 && grid[x-1][y]==ship && x+1<=9 && grid[x+1][y+ship-1]==ship) {
             return false;
         }
-        
-        //System.out.println("is sequential");
-        //Utils.printGrid(grid);
-        //System.out.println("v: " + vertical + ", ship: " + ship + ", x: " + x + ", y: " + y);
 
         return true;
     }
